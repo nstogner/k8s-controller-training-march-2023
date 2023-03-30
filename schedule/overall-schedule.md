@@ -1,0 +1,30 @@
+# Schedule
+
+- Kickoff
+- Control Plane
+- Kubernetes API
+- Control Loops
+- Custom Resources
+- Bash Controller (load test)
+- Go Controller Libraries (controller-runtime)
+- Go vs BASH efficiency comparison
+- Go Controller - Kubebuilder Intro
+- Go Controller - Implementing Logic (vegeta library)
+- Controller Observability
+    - Prometheus Intro
+    - Metrics
+    - Events
+    - When should I log? or publish event? or expose a metric?
+- Error Handling
+- Writing Tests
+- Deploying a Controller
+- Kubernetes Object Lifecycle
+- Webhooks
+- Object Defaulting
+    - OpenAPI
+    - Webhooks
+- Object Validation
+    - OpenAPI
+    - Webhooks
+- Finalizers
+- Object Versioning

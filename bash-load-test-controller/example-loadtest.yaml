@@ -1,0 +1,9 @@
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  name: example-1
+  namespace: default
+spec:
+  method: GET
+  address: http://localhost:8000
+  duration: 5s

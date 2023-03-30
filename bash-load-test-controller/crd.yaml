@@ -1,0 +1,38 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  # name must match the spec fields below, and be in the form: <plural>.<group>
+  name: loadtests.platform.mycompany.com
+spec:
+  # group name to use for REST API: /apis/<group>/<version>
+  group: platform.mycompany.com
+  # list of versions supported by this CustomResourceDefinition
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                method:
+                  type: string
+                address:
+                  type: string
+                duration:
+                  type: string
+  # either Namespaced or Cluster
+  scope: Namespaced
+  names:
+    # plural name to be used in the URL: /apis/<group>/<version>/<plural>
+    plural: loadtests
+    # singular name to be used as an alias on the CLI and for display
+    singular: loadtest
+    # kind is normally the CamelCased singular type. Your resource manifests use this.
+    kind: LoadTest
+    # shortNames allow shorter string to match your resource on the CLI
+    shortNames:
+      - lt
