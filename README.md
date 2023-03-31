@@ -51,3 +51,11 @@ The Kubernetes control plane is arguably the most successful orchestration engin
 ## About the Instructor
 
 Nick Stogner has worn many hats throughout his career as a system administrator, software developer, DevOps practitioner, and cloud architect. He started using Go and Kubernetes around 2015. Nick has served as a trusted advisor to early-stage startups and large industry leaders like Google and Apple.
+
+## Tools
+
+- [docker](https://docs.docker.com/get-docker/) - Build and push container images
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) - Kubernetes client
+- [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) - Manage local clusters
+- [vegeta](https://github.com/tsenart/vegeta) - Run load tests
+- [jq](https://stedolan.github.io/jq/) - Process JSON

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadtest-controller
+  namespace: default
+  labels:
+    control-plane: loadtest-controller
+spec:
+  selector:
+    matchLabels:
+      control-plane: loadtest-controller
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: controller
+      labels:
+        control-plane: loadtest-controller
+    spec:
+      containers:
+        - command:
+            - ./controller.sh
+          image: tbd.com/loadtest-controller:v1
+          imagePullPolicy: IfNotPresent
+          name: controller
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+            requests:
+              cpu: 100m
+              memory: 20Mi
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: loadtest-controller
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loadtest-controller
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: loadtest-controller
+rules:
+  - apiGroups:
+      - platform.mycompany.com
+    resources:
+      - loadtests
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - platform.mycompany.com
+    resources:
+      - loadtests/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - platform.mycompany.com
+    resources:
+      - loadtests/status
+    verbs:
+      - get
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: loadtest-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: loadtest-controller
+subjects:
+  - kind: ServiceAccount
+    name: loadtest-controller
+    namespace: default

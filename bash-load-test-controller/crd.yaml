@@ -24,6 +24,22 @@ spec:
                   type: string
                 duration:
                   type: string
+            status:
+              type: object
+              properties:
+                requests:
+                  type: integer
+                finished:
+                  type: boolean
+      additionalPrinterColumns:
+        - description: Load Test has Completed
+          jsonPath: .status.finished
+          name: Finished
+          type: boolean
+        - description: Number of requests
+          jsonPath: .status.requests
+          name: Requests
+          type: integer
   # either Namespaced or Cluster
   scope: Namespaced
   names:
