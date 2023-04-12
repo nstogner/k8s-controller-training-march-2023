@@ -27,15 +27,21 @@ import (
 type LoadTestSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
-	Address  string `json:"address"`
-	Method   string `json:"method"`
-	Duration string `json:"duration"`
+	Address string `json:"address"`
+	Method  string `json:"method"`
+
+	// Duration uses Golang duration formatting from the standard library time package.
+	Duration metav1.Duration `json:"duration"`
 }
 
 // LoadTestStatus defines the observed state of LoadTest
 type LoadTestStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	RequestCount int  `json:"requestCount"`
+	SuccessCount int  `json:"successCount"`
+	Finished     bool `json:"finished"`
 }
 
 //+kubebuilder:object:root=true

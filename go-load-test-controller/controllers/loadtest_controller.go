@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -25,12 +26,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	platformv1 "github.com/nstogner/k8s-controller-training-march-2023/go-load-test-controller/api/v1"
+	"github.com/nstogner/k8s-controller-training-march-2023/go-load-test-controller/internal/loadtest"
 )
 
 // LoadTestReconciler reconciles a LoadTest object
 type LoadTestReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+
+	Runner *loadtest.Runner
 }
 
 //+kubebuilder:rbac:groups=platform.mycompany.com,resources=loadtests,verbs=get;list;watch;create;update;patch;delete
@@ -49,12 +53,41 @@ type LoadTestReconciler struct {
 func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 
+	defer log.Info("Done Reconciling LoadTest")
+
 	var lt platformv1.LoadTest
 	if err := r.Client.Get(ctx, req.NamespacedName, &lt); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
 	log.Info("Reconciling LoadTest", "address", lt.Spec.Address)
+
+	if lt.Status.Finished {
+		log.Info("LoadTest already run, ignoring")
+		return ctrl.Result{}, nil
+	}
+
+	// TODO: Run load test.
+	out := r.Runner.Run(ctx, loadtest.Input{
+		ID:        string(lt.UID),
+		URL:       lt.Spec.Address,
+		Method:    lt.Spec.Method,
+		Duration:  lt.Spec.Duration.Duration,
+		ReqPerSec: 10,
+	})
+	if out.Duplicate {
+		// Avoid re-running a load test because of a stale cache.
+		log.Info("LoadTest already run, ignoring")
+		return ctrl.Result{}, nil
+	}
+
+	lt.Status.Finished = true
+	lt.Status.RequestCount = out.RequestCount
+	lt.Status.SuccessCount = out.SuccessCount
+
+	if err := r.Client.Status().Update(ctx, &lt); err != nil {
+		return ctrl.Result{}, fmt.Errorf("updating status: %w", err)
+	}
 
 	return ctrl.Result{}, nil
 }

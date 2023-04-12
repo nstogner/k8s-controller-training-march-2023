@@ -38,6 +38,8 @@ spec:
               address:
                 type: string
               duration:
+                description: Duration uses Golang duration formatting from the standard
+                  library time package.
                 type: string
               method:
                 type: string
@@ -48,6 +50,17 @@ spec:
             type: object
           status:
             description: LoadTestStatus defines the observed state of LoadTest
+            properties:
+              finished:
+                type: boolean
+              requestCount:
+                type: integer
+              successCount:
+                type: integer
+            required:
+            - finished
+            - requestCount
+            - successCount
             type: object
         type: object
     served: true

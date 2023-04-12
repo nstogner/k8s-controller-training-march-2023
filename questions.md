@@ -9,6 +9,8 @@
 
 ## Future Followups
 
+- Can you filter events based on type on the Server-side?
+
 - If a client requests a watch and the connection is severed is there a way it can re-attach to ensure it has missed nothing?
 
 - What are these update errors that I commonly see (referring to version conflicts)?
