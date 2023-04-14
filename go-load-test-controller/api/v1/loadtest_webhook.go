@@ -47,9 +47,12 @@ var _ webhook.Defaulter = &LoadTest{}
 func (r *LoadTest) Default() {
 	loadtestlog.Info("default", "name", r.Name)
 
-	//	if r.Spec.Method == "" {
-	//		r.Spec.Method = "GET"
-	// }
+	if r.Spec.Method == "" {
+		loadtestlog.Info("setting default method", "name", r.Name)
+		r.Spec.Method = "GET"
+	} else {
+		loadtestlog.Info("method already set", "name", r.Name)
+	}
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
