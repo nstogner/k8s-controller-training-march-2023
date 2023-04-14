@@ -1,0 +1,8 @@
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  name: loadtest-sample-invalid-method
+spec:
+  method: BAD
+  address: http://localhost:8000
+  duration: 5m

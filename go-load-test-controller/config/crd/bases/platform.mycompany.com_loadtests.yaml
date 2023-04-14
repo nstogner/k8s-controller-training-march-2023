@@ -36,12 +36,19 @@ spec:
             description: LoadTestSpec defines the desired state of LoadTest
             properties:
               address:
+                pattern: ^(http|https)://(\S+)
                 type: string
               duration:
                 description: Duration uses Golang duration formatting from the standard
                   library time package.
+                format: duration
                 type: string
               method:
+                default: GET
+                enum:
+                - GET
+                - POST
+                - DELETE
                 type: string
             required:
             - address
