@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -27,6 +28,7 @@ import (
 
 	platformv1 "github.com/nstogner/k8s-controller-training-march-2023/go-load-test-controller/api/v1"
 	"github.com/nstogner/k8s-controller-training-march-2023/go-load-test-controller/internal/loadtest"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // LoadTestReconciler reconciles a LoadTest object
@@ -62,12 +64,22 @@ func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	log.Info("Reconciling LoadTest", "address", lt.Spec.Address)
 
-	if lt.Status.Finished {
+	if lt.Status.Phase != "" {
 		log.Info("LoadTest already run, ignoring")
 		return ctrl.Result{}, nil
 	}
 
-	// TODO: Run load test.
+	log.Info("Updating LoadTest status to Running")
+	lt.Status.Phase = platformv1.PhaseRunning
+	lt.Status.StartTime = metav1.Time{Time: time.Now()}
+	if err := r.Client.Status().Update(ctx, &lt); err != nil {
+		// NOTE: This pre-run update will fail if the .Get() above
+		// read from a stale cache. This protects against re-running
+		// a load test because of a stale cache read.
+		return ctrl.Result{}, fmt.Errorf("updating status: %w", err)
+	}
+
+	log.Info("Running LoadTest")
 	out := r.Runner.Run(ctx, loadtest.Input{
 		ID:        string(lt.UID),
 		URL:       lt.Spec.Address,
@@ -75,15 +87,11 @@ func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		Duration:  lt.Spec.Duration.Duration,
 		ReqPerSec: 10,
 	})
-	if out.Duplicate {
-		// Avoid re-running a load test because of a stale cache.
-		log.Info("LoadTest already run, ignoring")
-		return ctrl.Result{}, nil
-	}
 
-	lt.Status.Finished = true
+	lt.Status.Phase = platformv1.PhaseCompleted
 	lt.Status.RequestCount = out.RequestCount
 	lt.Status.SuccessCount = out.SuccessCount
+	lt.Status.EndTime = metav1.Time{Time: time.Now()}
 
 	if err := r.Client.Status().Update(ctx, &lt); err != nil {
 		return ctrl.Result{}, fmt.Errorf("updating status: %w", err)
