@@ -27,10 +27,14 @@ import (
 type LoadTestSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
+	// +kubebuilder:validation:Pattern:=`^(http|https)://(\S+)`
 	Address string `json:"address"`
-	Method  string `json:"method"`
+	// +kubebuilder:validation:Enum:={GET,POST,DELETE}
+	// +kubebuilder:default:="GET"
+	Method string `json:"method"`
 
 	// Duration uses Golang duration formatting from the standard library time package.
+	// +kubebuilder:validation:Format:=duration
 	Duration metav1.Duration `json:"duration"`
 }
 

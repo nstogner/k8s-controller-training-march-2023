@@ -1,0 +1,8 @@
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  name: loadtest-sample-invalid-duration-too-long
+spec:
+  method: GET
+  address: http://localhost:8000
+  duration: 5h

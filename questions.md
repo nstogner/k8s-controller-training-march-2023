@@ -19,3 +19,4 @@
 
 - Cloud API Controllers
 
+- Show how to bypass the cache

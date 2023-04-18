@@ -59,3 +59,7 @@ Nick Stogner has worn many hats throughout his career as a system administrator,
 - [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) - Manage local clusters
 - [vegeta](https://github.com/tsenart/vegeta) - Run load tests
 - [jq](https://stedolan.github.io/jq/) - Process JSON
+
+## Links
+
+https://github.com/kubernetes/sample-controller/blob/master/docs/controller-client-go.md
