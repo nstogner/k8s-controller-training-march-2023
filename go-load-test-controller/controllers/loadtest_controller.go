@@ -69,6 +69,8 @@ func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return ctrl.Result{}, nil
 	}
 
+	fmt.Println("1. -----pre-status-update-1-resource-version: ", lt.ObjectMeta.ResourceVersion)
+
 	log.Info("Updating LoadTest status to Running")
 	lt.Status.Phase = platformv1.PhaseRunning
 	lt.Status.StartTime = metav1.Time{Time: time.Now()}
@@ -78,6 +80,8 @@ func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// a load test because of a stale cache read.
 		return ctrl.Result{}, fmt.Errorf("updating status: %w", err)
 	}
+
+	fmt.Println("2. -----pre-run-resource-version: ", lt.ObjectMeta.ResourceVersion)
 
 	log.Info("Running LoadTest")
 	out := r.Runner.Run(ctx, loadtest.Input{
@@ -96,6 +100,8 @@ func (r *LoadTestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	if err := r.Client.Status().Update(ctx, &lt); err != nil {
 		return ctrl.Result{}, fmt.Errorf("updating status: %w", err)
 	}
+
+	fmt.Println("3.-----post-run--resource-version: ", lt.ObjectMeta.ResourceVersion)
 
 	return ctrl.Result{}, nil
 }

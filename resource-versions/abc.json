@@ -1,0 +1,15 @@
+{
+    "apiVersion": "v1",
+    "kind": "ConfigMap",
+    "metadata": {
+        "creationTimestamp": "2023-04-19T16:06:31Z",
+        "name": "abc",
+        "namespace": "default",
+        "uid": "765153f9-16f4-4682-a41d-f685ed61efd2"
+    },
+    "data": {
+        "a": "b",
+        "b": "c",
+        "c": "d"
+    }
+}
