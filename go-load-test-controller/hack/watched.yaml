@@ -1,0 +1,61 @@
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.mycompany.com/v1","kind":"LoadTest","metadata":{"annotations":{},"name":"loadtest-sample","namespace":"default"},"spec":{"address":"http://localhost:8000","duration":"5s","method":"GET"}}
+  creationTimestamp: "2023-04-14T01:30:27Z"
+  generation: 1
+  name: loadtest-sample
+  namespace: default
+  resourceVersion: "5914"
+  uid: dd2e4089-4466-4828-bfe7-7ec7e1dbda58
+spec:
+  address: http://localhost:8000
+  duration: 5s
+  method: GET
+---
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.mycompany.com/v1","kind":"LoadTest","metadata":{"annotations":{},"name":"loadtest-sample","namespace":"default"},"spec":{"address":"http://localhost:8000","duration":"5s","method":"GET"}}
+  creationTimestamp: "2023-04-14T01:30:27Z"
+  generation: 1
+  name: loadtest-sample
+  namespace: default
+  resourceVersion: "5941"
+  uid: dd2e4089-4466-4828-bfe7-7ec7e1dbda58
+spec:
+  address: http://localhost:8000
+  duration: 5s
+  method: GET
+status:
+  phase: Running
+  requestCount: 0
+  startTime: "2023-04-14T01:30:42Z"
+  successCount: 0
+---
+apiVersion: platform.mycompany.com/v1
+kind: LoadTest
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.mycompany.com/v1","kind":"LoadTest","metadata":{"annotations":{},"name":"loadtest-sample","namespace":"default"},"spec":{"address":"http://localhost:8000","duration":"5s","method":"GET"}}
+  creationTimestamp: "2023-04-14T01:30:27Z"
+  generation: 1
+  name: loadtest-sample
+  namespace: default
+  resourceVersion: "5950"
+  uid: dd2e4089-4466-4828-bfe7-7ec7e1dbda58
+spec:
+  address: http://localhost:8000
+  duration: 5s
+  method: GET
+status:
+  endTime: "2023-04-14T01:30:47Z"
+  phase: Completed
+  requestCount: 50
+  startTime: "2023-04-14T01:30:42Z"
+  successCount: 0

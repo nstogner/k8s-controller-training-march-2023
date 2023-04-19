@@ -43,10 +43,22 @@ type LoadTestStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	RequestCount int  `json:"requestCount"`
-	SuccessCount int  `json:"successCount"`
-	Finished     bool `json:"finished"`
+	// +kubebuilder:validation:Enum=Running;Completed
+	Phase Phase `json:"phase"`
+
+	StartTime metav1.Time `json:"startTime"`
+	EndTime   metav1.Time `json:"endTime,omitempty"`
+
+	RequestCount int `json:"requestCount"`
+	SuccessCount int `json:"successCount"`
 }
+
+type Phase string
+
+const (
+	PhaseRunning   = "Running"
+	PhaseCompleted = "Completed"
+)
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status

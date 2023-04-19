@@ -2,7 +2,6 @@ package loadtest
 
 import (
 	"context"
-	"sync"
 	"time"
 
 	vegeta "github.com/tsenart/vegeta/lib"
@@ -18,20 +17,14 @@ type Input struct {
 }
 
 type Output struct {
-	Duplicate    bool
 	RequestCount int
 	SuccessCount int
 }
 
 type Runner struct {
-	ran sync.Map
 }
 
 func (r *Runner) Run(ctx context.Context, in Input) (out Output) {
-	if _, ran := r.ran.LoadOrStore(in.ID, struct{}{}); ran {
-		return Output{Duplicate: true}
-	}
-
 	atk := vegeta.NewAttacker(vegeta.Timeout(time.Second))
 
 	res := atk.Attack(

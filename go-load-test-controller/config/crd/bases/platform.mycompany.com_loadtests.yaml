@@ -58,15 +58,25 @@ spec:
           status:
             description: LoadTestStatus defines the observed state of LoadTest
             properties:
-              finished:
-                type: boolean
+              endTime:
+                format: date-time
+                type: string
+              phase:
+                enum:
+                - Running
+                - Completed
+                type: string
               requestCount:
                 type: integer
+              startTime:
+                format: date-time
+                type: string
               successCount:
                 type: integer
             required:
-            - finished
+            - phase
             - requestCount
+            - startTime
             - successCount
             type: object
         type: object
