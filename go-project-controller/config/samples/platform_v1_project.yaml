@@ -6,4 +6,4 @@ spec:
   environments:
     - dev
     - stage
-    - prod
+    - e2e-test

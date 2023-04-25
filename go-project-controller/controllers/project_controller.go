@@ -71,9 +71,9 @@ func (r *ProjectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 						Name: nsName,
 					},
 				}
-				//if err := ctrl.SetControllerReference(&project, &ns, r.Scheme); err != nil {
-				//	return ctrl.Result{}, err
-				//}
+				if err := ctrl.SetControllerReference(&project, &ns, r.Scheme); err != nil {
+					return ctrl.Result{}, err
+				}
 				if err := r.Create(ctx, &ns); err != nil {
 					return ctrl.Result{}, err
 				}
@@ -90,6 +90,6 @@ func (r *ProjectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 func (r *ProjectReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&platformv1.Project{}).
-		//Owns(&corev1.Namespace{}).
+		Owns(&corev1.Namespace{}).
 		Complete(r)
 }

@@ -20,3 +20,7 @@
 - Cloud API Controllers
 
 - Show how to bypass the cache
+
+- Show the code that does the `.Owns()` filtering.
+
+- Provide some examples of diff computing / hashing / patching to ensure desired state.
