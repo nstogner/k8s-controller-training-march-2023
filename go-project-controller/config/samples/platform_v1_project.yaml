@@ -1,0 +1,9 @@
+apiVersion: platform.mycompany.com/v1
+kind: Project
+metadata:
+  name: orders
+spec:
+  environments:
+    - dev
+    - stage
+    - e2e-test
