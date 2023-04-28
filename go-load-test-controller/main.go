@@ -91,9 +91,10 @@ func main() {
 	}
 
 	if err = (&controllers.LoadTestReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-		Runner: &loadtest.Runner{},
+		Client:        mgr.GetClient(),
+		Scheme:        mgr.GetScheme(),
+		Runner:        &loadtest.Runner{},
+		EventRecorder: mgr.GetEventRecorderFor("loadtest-controller"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "LoadTest")
 		os.Exit(1)

@@ -87,9 +87,10 @@ var _ = BeforeSuite(func() {
 	Expect(err).ToNot(HaveOccurred())
 
 	err = (&LoadTestReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-		Runner: &loadtest.Runner{},
+		Client:        k8sManager.GetClient(),
+		Scheme:        k8sManager.GetScheme(),
+		Runner:        &loadtest.Runner{},
+		EventRecorder: k8sManager.GetEventRecorderFor("loadtest-controller"),
 	}).SetupWithManager(k8sManager)
 	Expect(err).ToNot(HaveOccurred())
 
