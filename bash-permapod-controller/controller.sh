@@ -18,7 +18,7 @@ reconcile () {
     fi
 }
 
-# The function needs to be exported so that is can be called with xargs.
+# The function needs to be exported so that it can be called with xargs.
 export -f reconcile
 
 kubectl get namespaces -w -o=jsonpath='{.metadata.name}{"\n"}' | xargs -L1 bash -c 'reconcile "$@"' _
